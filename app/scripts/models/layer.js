@@ -1,8 +1,10 @@
 "use strict";
 
-function Layer(opts){
+function Layer(name, opts){
+  this.name = name;
   this.type = opts.type;
   this.points = [];
+  this.updated = true;
   this.size = {
     x: opts.x,
     y: opts.y
@@ -24,7 +26,7 @@ function Layer(opts){
   if(this.type == 'baseLayer'){
     for(var i = 0; i < this.points.length; i++){
       for(var j = 0; j <  this.points[i].length; j++){
-        var color = 'black';
+        var color = 'rgb(185, 182, 182)';
         if(isPair(j+i)){
           color = 'grey';
         }
@@ -44,6 +46,7 @@ Layer.prototype.setSize = function(x,y){
   this.size.y = y;
 }
 
+
 Layer.prototype.addPoint = function(x,y, color){
   this.points[x][y] = new Point({
     x: x,
@@ -54,6 +57,7 @@ Layer.prototype.addPoint = function(x,y, color){
   this.updated = true;
 }
 
+
 Layer.prototype.hide = function(){
   this.visible = false;
 }
@@ -63,18 +67,33 @@ Layer.prototype.show = function(){
 }
 
 Layer.prototype.render = function(index){
+  var c = this.getCanvas(index);
+  var ctx = c.getContext("2d");
+ 
   if(this.visible){
-    var c = document.getElementById("canvasLayer_"+ index);
-    var ctx = c.getContext("2d");
     var pointSize = this.getPointSize();
-    var self = this;
-    this.points.map(function(row){
-      row.map(function(point){
-        ctx.fillStyle = point.color;
-        ctx.fillRect(point.x * pointSize, point.y * pointSize, pointSize, pointSize);  
-      })
-    });
+    
+    //Max points to show
+    var maxRow = this.initialRow + this.max_total_rows_left * 2;
+    var maxPoint = this.initialPoint + this.max_total_rows_top * 2;
+    maxRow = maxRow > this.size.x ? this.size.x : maxRow;
+    maxPoint = maxPoint > this.size.y ? this.size.y : maxPoint;
+
+    //Offset to substract to the point rendering
+    var offsetLeft = this.initialRow * pointSize;
+    var offsetTop = this.initialPoint * pointSize;
+
+    for(var i = this.initialRow; i < maxRow; i ++){
+      for(var j = this.initialPoint;  j < maxPoint; j++){
+        ctx.fillStyle = this.points[i][j].color;
+        ctx.fillRect(this.points[i][j].x * pointSize - offsetLeft, this.points[i][j].y * pointSize  - offsetTop, pointSize, pointSize);  
+      }
+    }
+    
     this.updated = false;
+  }else{
+    c.width = c.width;
+    this.udpated = false;
   }
 }
 
@@ -82,12 +101,76 @@ Layer.prototype.getPointSize = function(){
   return this.scale * 1;
 }
 
-Layer.prototype.setZoom = function(opts){
+Layer.prototype.setZoom = function(opts, index){
   this.scale = opts.scale;
   this.center.x = opts.centerAt.x;
   this.center.y = opts.centerAt.y;
+  this.calculateMaxShowingPoints(index);
+  this.calculateInitialPoints();
 }
+
+Layer.prototype.calculateInitialPoints = function(){
+  //Calculate initial points to show, due to the zoomed area
+  var initialRow = this.center.x - this.max_total_rows_left;
+  var initialPoint = this.center.y - this.max_total_rows_top;
+  this.initialRow = initialRow < 0 ? 0 : initialRow;
+  this.initialPoint = initialPoint < 0 ? 0 : initialPoint;
+}
+
+Layer.prototype.calculateMaxShowingPoints = function(index) {
+  var pointSize = this.getPointSize();
+  var rowsLeft = 1;
+  var rowsTop = 1;
+  var isInsideLeft = true;
+  var isInsideTop = true;
+  var midCanvasWidth = parseInt(this.getCanvas(index).width / 2);
+  var midCanvasHeight = parseInt(this.getCanvas(index).height / 2);
+  
+  while(isInsideLeft){
+    var width = rowsLeft * pointSize; 
+    if(width < midCanvasWidth){
+      rowsLeft ++;
+    }else{
+      isInsideLeft = false;
+    }
+  }
+
+  while(isInsideTop){
+    var width = rowsTop * pointSize; 
+    if(width < midCanvasHeight){
+      rowsTop ++;
+    }else{
+      isInsideTop = false;
+    }
+  }
+  
+  this.max_total_rows_left = rowsLeft;
+  this.max_total_rows_top = rowsTop;
+};
 
 Layer.prototype.needsRendering = function(){
   return this.updated;
+}
+
+Layer.prototype.paint = function(e, color, index){
+  var c = this.getCanvas(index);
+  var coords = c.relMouseCoords(e);
+
+  var indexes = this.translateCoordinatesToIndexes(coords.x,coords.y);
+  this.addPoint(indexes.x,indexes.y,color);
+}
+
+Layer.prototype.translateCoordinatesToIndexes = function(x,y) {
+  var num_x = parseInt(x / this.getPointSize());
+  var num_y = parseInt(y / this.getPointSize());
+
+  return {
+    x: num_x + this.initialRow,
+    y: num_y + this.initialPoint
+  }
+};
+
+
+Layer.prototype.getCanvas = function(index){
+  return document.getElementById('canvasLayer_' + index);
 }

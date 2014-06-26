@@ -1,13 +1,18 @@
 'use strict';
 
 angular.module('pixelartioApp')
-  .controller('MainCtrl',[ '$scope', 'rafSrv', function ($scope, rafSrv) {
+  .controller('MainCtrl',[ '$scope', 'rafSrv', 'settingsSrv', function ($scope, rafSrv, settingsSrv) {
     $scope.layers = [];
 
+    var base_width = 300;
+    var base_height = 300;
+    var center_x = 150;
+    var center_y = 150;
+    var zoom = 3.0;
+
     function init(){
-      $scope.layers = [];
-      $scope.layers.push(new Layer({ type : 'baseLayer', x : 300, y: 300 }));
-      $scope.layers.push(new Layer({ type : 'transparent', x : 300, y: 300 }));
+      $scope.image = new ImagePixel(base_width, base_height);
+      $scope.currentLayer = $scope.image.layers[0];
       rafSrv.suscribe(renderLayers, 'mainRenderLayers');
     }
 
@@ -15,36 +20,72 @@ angular.module('pixelartioApp')
       rafSrv.start();
     });
 
-    function hideLayer(layer){
+    $scope.hideLayer = function(layer){
       layer.hide();
+      layer.updated = true;
     }
 
-    function showLayer(layer){
+    $scope.showLayer = function(layer){
       layer.show();
-    }
-
-    function setZoom(){
-      $scope.layers.map(function(layer){
-        layer.setZoom(getCurrentZoom());
-      })
+      layer.updated = true;
     }
 
     function renderLayers(){
-      setZoom();
-      $scope.layers.map(function(layer,index){
-        layer.render(index);    
-        //if(layer.needsRendering()){
-          //layer.render(index);    
-        //}
+      $scope.image.layers.map(function(layer,index){
+        layer.setZoom(getCurrentZoom(),index);
+        if(layer.needsRendering()){
+          layer.render(index);    
+        }
       })
-    } 
+    }
+
+    $scope.addLayer = function(){
+      $scope.image.addLayer();
+    }
+
+    $scope.setCurrentLayer = function(layer){
+      $scope.currentLayer = layer;
+    }
+
+    $scope.deleteLayer = function(layer){
+      $scope.image.deleteLayer(layer);
+      $scope.currentLayer = $scope.image.layers[0];
+    }
+
+    $scope.moveUp = function(){
+      center_y++;
+    }
+
+    $scope.moveDown = function(){
+      center_y--;
+    }
+
+    $scope.moveLeft = function(){
+      center_x--;
+    }
+
+    $scope.moveRight = function(){
+      center_x++;
+    }
+
+    $scope.zoomIn = function(){
+      zoom+=1.5;
+    }
+
+    $scope.zoomOut = function(){
+      zoom+=1.5;
+    }
+
+    $scope.paint = function(layer, event, index){
+      layer.paint(event, settingsSrv.getCurrentColor(), index);
+    }
 
     function getCurrentZoom(){
       return {
-        scale: 5.0,
+        scale: zoom,
         centerAt: {
-          x: 250,
-          y: 250
+          x: center_x,
+          y: center_y
         }
       }
     }

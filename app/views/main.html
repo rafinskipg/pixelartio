@@ -38,9 +38,19 @@
   </div>
 </div>
 
-<div class="row marketing">
-  <div class="canvas_container" >
+<div class="row">
+  <div class="canvas_container col-xs-12" >
     <canvas id="canvasLayer_{{$index}}" ng-repeat="layer in image.layers" class="canvas_layer" ng-click="paint(currentLayer, $event, $index)"></canvas>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xs-6">
+    <div class="btn btn-primary" ng-click="generateImage()">Generate!</div>
+  </div>
+  <div class="col-xs-6" ng-show="imageSrc">
+    Generated Image: 
+    <img ng-src="{{imageSrc}}">
   </div>
 </div>
 

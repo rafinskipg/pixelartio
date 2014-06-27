@@ -1,4 +1,4 @@
-var Canvas = require('canvas');
+var Canvas = require('canvas')
   , Image = Canvas.Image;
 
 function generate(req){
@@ -10,7 +10,7 @@ function generate(req){
     ctx.fillStyle = point.color;
     ctx.fillRect(point.x, point.y, point.width, point.height);
   });
-  return canvas.toDataUrl();
+  return canvas.toDataURL();
 }
 
 module.exports = {

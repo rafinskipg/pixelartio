@@ -71,23 +71,11 @@ Layer.prototype.render = function(index){
   var ctx = c.getContext("2d");
  
   if(this.visible){
-    var pointSize = this.getPointSize();
-    
-    //Max points to show
-    var maxRow = this.initialRow + this.max_total_rows_left * 2;
-    var maxPoint = this.initialPoint + this.max_total_rows_top * 2;
-    maxRow = maxRow > this.size.x ? this.size.x : maxRow;
-    maxPoint = maxPoint > this.size.y ? this.size.y : maxPoint;
 
-    //Offset to substract to the point rendering
-    var offsetLeft = this.initialRow * pointSize;
-    var offsetTop = this.initialPoint * pointSize;
-
-    for(var i = this.initialRow; i < maxRow; i ++){
-      for(var j = this.initialPoint;  j < maxPoint; j++){
-        ctx.fillStyle = this.points[i][j].color;
-        ctx.fillRect(this.points[i][j].x * pointSize - offsetLeft, this.points[i][j].y * pointSize  - offsetTop, pointSize, pointSize);  
-      }
+    var points = this.getRenderingPoints();
+    for(var i = 0; i < points.length; i++){
+      ctx.fillStyle = points[i].color;
+      ctx.fillRect(points[i].x , points[i].y,  points[i].width,  points[i].height);  
     }
     
     this.updated = false;
@@ -96,6 +84,39 @@ Layer.prototype.render = function(index){
     this.udpated = false;
   }
 }
+
+Layer.prototype.getRenderingPoints = function() {
+  var pointSize = this.getPointSize();
+    
+  //Max points to show
+  var maxRow = this.initialRow + this.max_total_rows_left * 2;
+  var maxPoint = this.initialPoint + this.max_total_rows_top * 2;
+  maxRow = maxRow > this.size.x ? this.size.x : maxRow;
+  maxPoint = maxPoint > this.size.y ? this.size.y : maxPoint;
+
+  //Offset to substract to the point rendering
+  var offsetLeft = this.initialRow * pointSize;
+  var offsetTop = this.initialPoint * pointSize;
+
+  var points = [];
+
+  for(var i = this.initialRow; i < maxRow; i ++){
+    for(var j = this.initialPoint;  j < maxPoint; j++){
+      var options = {
+        x : this.points[i][j].x * pointSize - offsetLeft,
+        y : this.points[i][j].y * pointSize  - offsetTop,
+        color : this.points[i][j].color,
+        width: pointSize,
+        height: pointSize
+      };
+      if(options.x && options.y){
+        points.push(options);
+      }
+    }
+  }
+
+  return points;
+};
 
 Layer.prototype.getPointSize = function(){
   return this.scale * 1;

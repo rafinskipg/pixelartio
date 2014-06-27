@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('pixelartioApp')
-  .controller('MainCtrl',[ '$scope', 'rafSrv', 'settingsSrv', function ($scope, rafSrv, settingsSrv) {
+  .controller('MainCtrl',[ '$scope', 'rafSrv', 'settingsSrv','imageGenerationSrv', function ($scope, rafSrv, settingsSrv, imageGenerationSrv) {
     $scope.layers = [];
 
     var base_width = 300;
@@ -78,6 +78,27 @@ angular.module('pixelartioApp')
 
     $scope.paint = function(layer, event, index){
       layer.paint(event, settingsSrv.getCurrentColor(), index);
+    }
+
+    $scope.generateImage = function(){
+      var points = [];
+
+      $scope.image.layers.map(function(layer,index){
+        layer.setZoom(getCurrentZoom(),index);
+        if(layer.visible ){
+          var layerPoints = layer.getRenderingPoints();    
+          points = points.concat(layerPoints);
+        }
+      })
+
+      imageGenerationSrv.generate(points)
+        .then(function(response){
+          $scope.imageSrc = response.data.url;
+        })
+        .catch(function(fail){
+          console.log('eee')
+        })
+        
     }
 
     function getCurrentZoom(){

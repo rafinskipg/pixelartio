@@ -8,7 +8,7 @@ angular.module('pixelartioApp')
     var base_height = 300;
     var center_x = 150;
     var center_y = 150;
-    var zoom = 3.0;
+    var zoom = 10.0;
 
     function init(){
       $scope.image = new ImagePixel(base_width, base_height);

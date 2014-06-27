@@ -6,9 +6,11 @@ angular.module('pixelartioApp')
 
     var base_width = 300;
     var base_height = 300;
+    var visible_width = 500;
+    var visible_height = 500;
     var center_x = 150;
     var center_y = 150;
-    var zoom = 10.0;
+    var zoom = 5.0;
 
     function init(){
       $scope.image = new ImagePixel(base_width, base_height);
@@ -107,7 +109,9 @@ angular.module('pixelartioApp')
         centerAt: {
           x: center_x,
           y: center_y
-        }
+        },
+        width: visible_width,
+        height: visible_height
       }
     }
 

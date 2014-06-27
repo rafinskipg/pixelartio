@@ -5,6 +5,7 @@ function Layer(name, opts){
   this.type = opts.type;
   this.points = [];
   this.updated = true;
+  this.scaleFactor = 2.0;
   this.size = {
     x: opts.x,
     y: opts.y
@@ -71,13 +72,14 @@ Layer.prototype.render = function(index){
   var ctx = c.getContext("2d");
  
   if(this.visible){
-
+    ctx.save();
+    //ctx.scale(this.scale, this.scale)
     var points = this.getRenderingPoints();
     for(var i = 0; i < points.length; i++){
       ctx.fillStyle = points[i].color;
       ctx.fillRect(points[i].x , points[i].y,  points[i].width,  points[i].height);  
     }
-    
+    ctx.restore();
     this.updated = false;
   }else{
     c.width = c.width;
@@ -93,6 +95,9 @@ Layer.prototype.getRenderingPoints = function() {
   var maxPoint = this.initialPoint + this.max_total_rows_top * 2;
   maxRow = maxRow > this.size.x ? this.size.x : maxRow;
   maxPoint = maxPoint > this.size.y ? this.size.y : maxPoint;
+
+  console.log(maxRow - this.initialRow);
+  console.log(maxPoint - this.initialPoint)
 
   //Offset to substract to the point rendering
   var offsetLeft = this.initialRow * pointSize;
@@ -139,6 +144,8 @@ Layer.prototype.calculateInitialPoints = function(){
 }
 
 Layer.prototype.calculateMaxShowingPoints = function(index) {
+  //Returns the points frm the center that can be shown at this time
+
   var pointSize = this.getPointSize();
   var rowsLeft = 1;
   var rowsTop = 1;
@@ -148,7 +155,7 @@ Layer.prototype.calculateMaxShowingPoints = function(index) {
   var midCanvasHeight = parseInt(this.getCanvas(index).height / 2);
   
   while(isInsideLeft){
-    var width = rowsLeft * pointSize; 
+    var width = rowsLeft * pointSize ; 
     if(width < midCanvasWidth){
       rowsLeft ++;
     }else{
@@ -164,7 +171,8 @@ Layer.prototype.calculateMaxShowingPoints = function(index) {
       isInsideTop = false;
     }
   }
-  
+
+
   this.max_total_rows_left = rowsLeft;
   this.max_total_rows_top = rowsTop;
 };
@@ -176,14 +184,16 @@ Layer.prototype.needsRendering = function(){
 Layer.prototype.paint = function(e, color, index){
   var c = this.getCanvas(index);
   var coords = c.relMouseCoords(e);
-
-  var indexes = this.translateCoordinatesToIndexes(coords.x,coords.y);
+ 
+  //var factor = this.scale;
+  var factor = 1.0;
+  var indexes = this.translateCoordinatesToIndexes(coords.x,coords.y, factor);
   this.addPoint(indexes.x,indexes.y,color);
 }
 
-Layer.prototype.translateCoordinatesToIndexes = function(x,y) {
-  var num_x = parseInt(x / this.getPointSize());
-  var num_y = parseInt(y / this.getPointSize());
+Layer.prototype.translateCoordinatesToIndexes = function(x,y, factor) {
+  var num_x = parseInt((x/factor) / this.getPointSize());
+  var num_y = parseInt((y/factor) / this.getPointSize());
 
   return {
     x: num_x + this.initialRow,

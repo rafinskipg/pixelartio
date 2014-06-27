@@ -3,7 +3,8 @@ var image_generator = require('./generate_canvas_image')
 var app = express();
 
 var bodyParser = require('body-parser')
-app.use( bodyParser.json() );       // to support JSON-encoded bodies
+
+app.use( bodyParser.json({limit: '50mb'}) );       // to support JSON-encoded bodies
 app.use( bodyParser.urlencoded() );
 
 // Add headers
@@ -26,7 +27,6 @@ app.use(function (req, res, next) {
 });
 
 app.post('/gen-image', function(req, res){
-  console.log(req.body.points);
   var url = image_generator.generate(req);
   res.json({url: url});
 });

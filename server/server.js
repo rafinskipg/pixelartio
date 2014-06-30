@@ -1,5 +1,6 @@
 var express = require('express');
 var image_generator = require('./generate_canvas_image')
+var heatmapjs = require('./heatmap')
 var app = express();
 
 var bodyParser = require('body-parser')
@@ -28,6 +29,14 @@ app.use(function (req, res, next) {
 
 app.post('/gen-image', function(req, res){
   var url = image_generator.generate(req);
+  res.json({url: url});
+});
+app.post('/gen-heat-map', function(req, res){
+  var url = image_generator.generate_heatMap(req);
+  res.json({url: url});
+});
+app.post('/gen-heat-map-npm', function(req, res){
+  var url = heatmapjs.generate_heatMap(req);
   res.json({url: url});
 });
 

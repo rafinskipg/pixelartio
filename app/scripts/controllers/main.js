@@ -82,7 +82,7 @@ angular.module('pixelartioApp')
       layer.paint(event, settingsSrv.getCurrentColor(), index);
     }
 
-    $scope.generateImage = function(){
+    function getPoints(){
       var points = [];
 
       $scope.image.layers.map(function(layer,index){
@@ -92,8 +92,38 @@ angular.module('pixelartioApp')
           points = points.concat(layerPoints);
         }
       })
+      return points;
+    }
+
+    $scope.generateImage = function(){
+      var points = getPoints();
 
       imageGenerationSrv.generate(points)
+        .then(function(response){
+          $scope.imageSrc = response.data.url;
+        })
+        .catch(function(fail){
+          console.log('eee')
+        })
+        
+    } 
+
+    $scope.generateHeatMap = function(){
+      var points = getPoints();
+
+      imageGenerationSrv.generateHeatMap(points)
+        .then(function(response){
+          $scope.imageSrc = response.data.url;
+        })
+        .catch(function(fail){
+          console.log('eee')
+        })
+        
+    }
+    $scope.generateHeatMapNpm = function(){
+      var points = getPoints();
+
+      imageGenerationSrv.generateHeatMapNpm(points)
         .then(function(response){
           $scope.imageSrc = response.data.url;
         })
@@ -114,6 +144,8 @@ angular.module('pixelartioApp')
         height: visible_height
       }
     }
+
+
 
     init();
 

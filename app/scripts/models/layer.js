@@ -96,9 +96,6 @@ Layer.prototype.getRenderingPoints = function() {
   maxRow = maxRow > this.size.x ? this.size.x : maxRow;
   maxPoint = maxPoint > this.size.y ? this.size.y : maxPoint;
 
-  console.log(maxRow - this.initialRow);
-  console.log(maxPoint - this.initialPoint)
-
   //Offset to substract to the point rendering
   var offsetLeft = this.initialRow * pointSize;
   var offsetTop = this.initialPoint * pointSize;

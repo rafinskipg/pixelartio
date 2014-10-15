@@ -1,57 +1,36 @@
 'use strict';
 
 angular.module('pixelartioApp')
-  .controller('MainCtrl',[ '$scope', 'rafSrv', 'settingsSrv','imageGenerationSrv', function ($scope, rafSrv, settingsSrv, imageGenerationSrv) {
+  .controller('MainCtrl',['$timeout', '$scope', 'rafSrv', 'settingsSrv', 'imageSrv','actionsSrv', function ($timeout, $scope, rafSrv, settingsSrv, imageSrv, actionsSrv) {
     $scope.layers = [];
 
-    var base_width = 300;
-    var base_height = 300;
-    var visible_width = 500;
-    var visible_height = 500;
-    var center_x = 150;
-    var center_y = 150;
-    var zoom = 5.0;
-
-    function init(){
-      $scope.image = new ImagePixel(base_width, base_height);
-      $scope.currentLayer = $scope.image.layers[0];
-      rafSrv.suscribe(renderLayers, 'mainRenderLayers');
-    }
-
-    angular.element(document).ready(function(){
+    
+    actionsSrv.suscribe('imageGenerated', function(image){
+      $scope.image = image;
+      //Suscribe to the loop
       rafSrv.start();
+      rafSrv.suscribe(renderLayers, 'mainRenderLayers');
     });
 
-    $scope.hideLayer = function(layer){
-      layer.hide();
-      layer.updated = true;
-    }
+    actionsSrv.suscribe('generatedImageUrl', function(url){
+      $scope.imageSrc = url;
+    })
 
-    $scope.showLayer = function(layer){
-      layer.show();
-      layer.updated = true;
-    }
+    angular.element(document).ready(function(){
+      //Todo add a method for declaring al components ready in the actionsSrv
+      $timeout(function(){
+        actionsSrv.trigger('init');
+      }, 1000)
+
+    });
 
     function renderLayers(){
       $scope.image.layers.map(function(layer,index){
-        layer.setZoom(getCurrentZoom(),index);
+        layer.setZoom(settingsSrv.getZoom(),index);
         if(layer.needsRendering()){
           layer.render(index);    
         }
       })
-    }
-
-    $scope.addLayer = function(){
-      $scope.image.addLayer();
-    }
-
-    $scope.setCurrentLayer = function(layer){
-      $scope.currentLayer = layer;
-    }
-
-    $scope.deleteLayer = function(layer){
-      $scope.image.deleteLayer(layer);
-      $scope.currentLayer = $scope.image.layers[0];
     }
 
     $scope.moveUp = function(){
@@ -78,75 +57,19 @@ angular.module('pixelartioApp')
       zoom+=1.5;
     }
 
-    $scope.paint = function(layer, event, index){
-      layer.paint(event, settingsSrv.getCurrentColor(), index);
+    $scope.paint = function(event, index){
+      imageSrv.addPoint(event, index);
     }
 
-    function getPoints(){
-      var points = [];
-
-      $scope.image.layers.map(function(layer,index){
-        layer.setZoom(getCurrentZoom(),index);
-        if(layer.visible ){
-          var layerPoints = layer.getRenderingPoints();    
-          points = points.concat(layerPoints);
-        }
-      })
-      return points;
-    }
-
+    //TODO:Move this to tools bar
     $scope.generateImage = function(){
-      var points = getPoints();
-
-      imageGenerationSrv.generate(points)
-        .then(function(response){
-          $scope.imageSrc = response.data.url;
-        })
-        .catch(function(fail){
-          console.log('eee')
-        })
-        
-    } 
-
+      imageSrv.generateImage();
+    }
     $scope.generateHeatMap = function(){
-      var points = getPoints();
-
-      imageGenerationSrv.generateHeatMap(points)
-        .then(function(response){
-          $scope.imageSrc = response.data.url;
-        })
-        .catch(function(fail){
-          console.log('eee')
-        })
-        
+      imageSrv.generateHeatMap();
     }
     $scope.generateHeatMapNpm = function(){
-      var points = getPoints();
-
-      imageGenerationSrv.generateHeatMapNpm(points)
-        .then(function(response){
-          $scope.imageSrc = response.data.url;
-        })
-        .catch(function(fail){
-          console.log('eee')
-        })
-        
+      imageSrv.generateHeatMapNpm();
     }
-
-    function getCurrentZoom(){
-      return {
-        scale: zoom,
-        centerAt: {
-          x: center_x,
-          y: center_y
-        },
-        width: visible_width,
-        height: visible_height
-      }
-    }
-
-
-
-    init();
 
   }]);

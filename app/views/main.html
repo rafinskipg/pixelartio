@@ -8,26 +8,7 @@
 </div>
 <div class="jumbotron">
   <div class="row">
-    <div class="col-xs-6 layers">
-      <h4>Layers</h4>
-      <h5>Currently selected : {{currentLayer.name}}</h5>
-      <div class="edition_layer">
-         <input type="text" ng-model="currentLayer.name" value="{{currentLayer.name}}" >
-      </div>
-      <div class="list-group">
-        <div class="list-group-item" ng-click="setCurrentLayer(layer)" ng-class="{'active': currentLayer == layer}"ng-repeat="layer in image.layers">
-          <span class="name"  >{{layer.name}}</span>
-          <span class="glyphicon glyphicon-eye-open" ng-click="showLayer(layer)" ng-show="layer.visible == false"></span>
-          <span class="glyphicon glyphicon-eye-close" ng-click="hideLayer(layer)" ng-show="layer.visible == true"></span>
-          <div class="layer_contros">
-            <span class="glyphicon glyphicon-trash" ng-click="deleteLayer(layer)"></span>
-          </div>
-        </div>
-      </div>
-      <div class="controls">
-        <div class="btn btn-primary" ng-click="addLayer()">Add Layer</div>
-      </div>
-    </div>
+    
     <div class="col-xs-6 picker" ng-controller="PickerCtrl">
       <h4> Current color: {{currentColor}} <span class="glyphicon glyphicon-th" style="color: {{currentColor}}"></span></h4>
       <div class="controls">
@@ -40,7 +21,7 @@
 
 <div class="row">
   <div class="canvas_container col-xs-12" >
-    <canvas id="canvasLayer_{{$index}}" ng-repeat="layer in image.layers" class="canvas_layer" ng-click="paint(currentLayer, $event, $index)"></canvas>
+    <canvas id="canvasLayer_{{$index}}" ng-repeat="layer in image.layers" class="canvas_layer" ng-click="paint($event, $index)"></canvas>
   </div>
 </div>
 

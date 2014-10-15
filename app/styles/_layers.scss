@@ -1,9 +1,14 @@
 .layers_box{
   height: 500px;
-  background: rgb(69, 69, 88);
+  background: #454558;
   position: fixed;
   bottom: 0;
-  width: 105%;
-  left: -10px;
+  right: 0px;
+  padding: 26px;
+  color: white;
+
+  input{
+    color: black;
+  }
   
 }

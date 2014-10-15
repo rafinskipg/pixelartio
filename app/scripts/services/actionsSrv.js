@@ -11,12 +11,16 @@ angular.module('pixelartioApp')
       }
       
       suscriptions[item].push(fn);
+      console.log(suscriptions[item].length, item)
     }
 
     function trigger(item){
       if(suscriptions[item]){
-        suscriptions[item].forEach(function(item){
-          item.apply(null, arguments);
+        var args = [];
+        Array.prototype.push.apply( args, arguments );
+        args.shift();
+        suscriptions[item].forEach(function(fn){
+          fn.apply(null, args);
         });
       }
     }

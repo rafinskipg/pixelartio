@@ -16,6 +16,7 @@
     <!-- build:css({.tmp,app}) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
+    <link href='http://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'>
   </head>
   <body ng-app="pixelartioApp">
     <!--[if lt IE 7]>
@@ -23,7 +24,7 @@
     <![endif]-->
 
     <!-- Add your site or application content here -->
-    <div class="container" ng-view=""></div>
+    <div class="container-fluid" ng-view=""></div>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
      <script>
@@ -74,9 +75,12 @@
         <script src="scripts/services/imagesettings.js"></script>
         <script src="scripts/services/rafsrv.js"></script>
         <script src="scripts/controllers/main.js"></script>
+        <script src="scripts/controllers/tools.js"></script>
         
+        <script src="scripts/controllers/layers.js"></script>
         <script src="scripts/controllers/picker.js"></script>
         <script src="scripts/services/settingssrv.js"></script>
+        <script src="scripts/services/actionsSrv.js"></script>
         <script src="scripts/services/imagegenerationsrv.js"></script>
         <!-- endbuild -->
 </body>

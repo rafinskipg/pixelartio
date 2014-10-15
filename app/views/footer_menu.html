@@ -1,0 +1,5 @@
+<div class="footer_menu" ng-controller="ToolsCtrl">
+  <div class="tool {{tool.type}}" ng-repeat="tool in tools" ng-click="tool.action()">
+    <span class="icon {{tool.classIcon}}"></span>{{tool.name}}
+  </div>
+</div>

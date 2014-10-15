@@ -18,6 +18,7 @@ $icon-font-path: "/bower_components/bootstrap-sass-official/vendor/assets/fonts/
 body {
     padding-top: 20px;
     padding-bottom: 20px;
+    font-family: 'Ubuntu', sans-serif;
 }
 
 /* Everything but the jumbotron gets side spacing for mobile first views */
@@ -94,3 +95,7 @@ body {
         border-bottom: 0;
     }
 }
+
+
+@import "tools";
+@import "layers";

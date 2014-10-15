@@ -12,12 +12,24 @@ angular.module('pixelartioApp')
     function getCurrentColor(){
       return currentColor;
     }
+    
+    var tool;
+
+    function setTool (color){
+      tool = color;
+    }
+
+    function getTool(){
+      return tool;
+    }
 
     // Method for instantiating
     this.$get = function () {
       return {
         setCurrentColor: setCurrentColor,
-        getCurrentColor: getCurrentColor
+        getCurrentColor: getCurrentColor,
+        setTool: setTool,
+        getTool: getTool
       }
     };
   });

@@ -1,0 +1,19 @@
+.footer_menu{
+  height: 69px;
+  background: rgb(69, 69, 88);
+  position: fixed;
+  bottom: 0;
+  width: 105%;
+  left: -10px;
+  .tool{
+    float: left; 
+    color: rgb(157, 214, 157);
+    padding: 20px;
+    border-right: 1px solid rgba(160, 160, 160, 0.42);
+    font-size: 20px;
+    cursor: pointer;
+    .icon{
+      margin-right: 10px;
+    }
+  }
+}

@@ -1,7 +1,20 @@
+.edition{
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
 .canvas_container{
   position:relative;
   height: 500px;
   width: 500px;
+
+
+  &.pen{
+      cursor: url('../images/cursors/Pencil.cur'), auto; 
+  }
+  &.eraser{
+      cursor: url('../images/cursors/Eraser.cur'), auto; 
+  }
+
 }
 
 .canvas_layer{

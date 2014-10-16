@@ -22,8 +22,8 @@ angular.module('pixelartioApp')
       return currentColor;
     }
 
-    function setTool (color){
-      tool = color;
+    function setTool (t){
+      tool = t;
     }
 
     function getTool(){

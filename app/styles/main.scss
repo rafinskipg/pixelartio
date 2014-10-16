@@ -16,8 +16,6 @@ $icon-font-path: "/bower_components/bootstrap-sass-official/vendor/assets/fonts/
 
 /* Space out content a bit */
 body {
-    padding-top: 20px;
-    padding-bottom: 20px;
     font-family: 'Ubuntu', sans-serif;
 }
 
@@ -99,3 +97,5 @@ body {
 
 @import "tools";
 @import "layers";
+@import "home";
+

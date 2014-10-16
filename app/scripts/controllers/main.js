@@ -24,6 +24,10 @@ angular.module('pixelartioApp')
 
     });
 
+    $scope.getTool = function(){
+      return settingsSrv.getTool();
+    }
+
     function renderLayers(){
       $scope.image.layers.map(function(layer,index){
         layer.setZoom(settingsSrv.getZoom(),index);

@@ -1,0 +1,27 @@
+.home{
+  background: white;
+ 
+  .title_section{
+    padding-top: 200px;
+    padding-bottom: 200px;
+    border_bottom: 1px solid black;
+    background:linear-gradient(to bottom, #5d116b 0%,#9c89a5 100%,#613d68 100%);
+    .title{
+      color: white;
+      font-size: 85px;
+      font-family: 'Julius Sans One', sans-serif;
+    }
+  }
+
+
+  .features_section{
+    padding-top: 50px;
+    padding-bottom: 50px;
+
+     .title{
+      color: black;
+      font-size: 40px;
+      font-family: 'Julius Sans One', sans-serif;
+    }
+  }
+}

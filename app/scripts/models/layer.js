@@ -35,6 +35,7 @@ function Layer(name, opts){
       }
     }
   }
+
 }
 
 
@@ -69,12 +70,15 @@ Layer.prototype.show = function(){
 
 Layer.prototype.render = function(index){
   var c = this.getCanvas(index);
+  //c.width = this.size.x;
+  //c.height = this.size.y;
   var ctx = c.getContext("2d");
  
   if(this.visible){
     ctx.save();
     //ctx.scale(this.scale, this.scale)
     var points = this.getRenderingPoints();
+
     for(var i = 0; i < points.length; i++){
       ctx.fillStyle = points[i].color;
       ctx.fillRect(points[i].x , points[i].y,  points[i].width,  points[i].height);  

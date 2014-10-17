@@ -22,7 +22,7 @@
 
   <div class="row">
     <div class="canvas_container col-xs-12 {{getTool()}}" ng-class="" >
-      <canvas id="canvasLayer_{{$index}}" ng-repeat="layer in image.layers" class="canvas_layer" ng-click="paint($event, $index)"></canvas>
+      <canvas id="canvasLayer_{{$index}}" width="{{layer.size.x}}" height="{{layer.size.y}}" ng-repeat="layer in image.layers" class="canvas_layer" ng-click="paint($event, $index)"></canvas>
     </div>
   </div>
 

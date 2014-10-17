@@ -6,13 +6,13 @@ angular.module('pixelartioApp')
     var currentColor;
     var tool;
 
-    var base_width = 300;
-    var base_height = 300;
-    var visible_width = 500;
-    var visible_height = 500;
+    var base_width = 600;
+    var base_height = 600;
+    var visible_width = 800;
+    var visible_height = 800;
     var center_x = 150;
     var center_y = 150;
-    var zoom = 5.0;
+    var zoom = 10.0;
 
     function setCurrentColor (color){
       currentColor = color;

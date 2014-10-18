@@ -1,13 +1,13 @@
 .footer_menu{
   height: 69px;
-  background: rgb(69, 69, 88);
+  background: $optionsBgColor;
   position: fixed;
   bottom: 0;
   width: 105%;
   left: -10px;
   .tool{
     float: left; 
-    color: rgb(157, 214, 157);
+    color: $optionsTextColor;
     padding: 20px;
     border-right: 1px solid rgba(160, 160, 160, 0.42);
     font-size: 20px;
@@ -16,4 +16,9 @@
       margin-right: 10px;
     }
   }
+}
+
+.header_options{
+  background: $optionsBgColor;
+  color: $optionsTextColor;
 }

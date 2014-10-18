@@ -1,25 +1,5 @@
 <div class="container-fluid">
-  <div class="header">
-    <ul class="nav nav-pills pull-right">
-      <li class="active"><a ng-href="#">Home</a></li>
-      <li><a ng-href="#">About</a></li>
-      <li><a ng-href="#">Contact</a></li>
-    </ul>
-    <h3 class="text-muted">pixelartio</h3>
-  </div>
-  <div class="jumbotron">
-    <div class="row">
-      
-      <div class="col-xs-6 picker" ng-controller="PickerCtrl">
-        <h4> Current color: {{currentColor}} <span class="glyphicon glyphicon-th" style="color: {{currentColor}}"></span></h4>
-        <div class="controls">
-          <div class="btn btn-primary" ng-click="generateRandomColor()">Generate Random Color</div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
+  <div ng-include src="'views/editor/header_options.html'"></div>
   <div class="row">
     <div class="canvas_container col-xs-12 {{getTool()}}" ng-class="" >
       <canvas id="canvasLayer_{{$index}}" width="{{layer.size.x}}" height="{{layer.size.y}}" ng-repeat="layer in image.layers" class="canvas_layer" ng-click="paint($event, $index)"></canvas>

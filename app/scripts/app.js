@@ -1,6 +1,7 @@
+/*jshint unused:false */
 'use strict';
 
-angular
+/*angular
   .module('pixelartioApp', [
     'ngCookies',
     'ngResource',
@@ -20,4 +21,29 @@ angular
       .otherwise({
         redirectTo: '/'
       });
-  });
+  });*/
+
+
+
+var app;
+
+(function(angular) {
+
+    var moduleDependencies = [];
+
+    moduleDependencies = [
+        'ui.router'
+    ];
+
+    app = angular.module('pixelartioApp', moduleDependencies);
+
+
+    app.run(['$rootScope',
+        function($rootScope) {
+
+        }
+    ]);
+
+
+}(angular));
+

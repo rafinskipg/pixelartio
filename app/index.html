@@ -26,7 +26,7 @@
     <![endif]-->
 
     <!-- Add your site or application content here -->
-    <div    ng-view=""></div>
+    <div ui-view=""></div>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
      <script>
@@ -60,23 +60,21 @@
     <script src="bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/modal.js"></script>
     <script src="bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/tooltip.js"></script>
     <script src="bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/popover.js"></script>
-    <script src="bower_components/angular-resource/angular-resource.js"></script>
-    <script src="bower_components/angular-cookies/angular-cookies.js"></script>
-    <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
-    <script src="bower_components/angular-route/angular-route.js"></script>
     <script src="bower_components/spectrum/spectrum.js"></script>
+    <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
         <script src="scripts/app.js"></script>
+        <script src="scripts/router.js"></script>
         <script src="scripts/utils/raf.js"></script>
         <script src="scripts/utils/canvasCoords.js"></script>
         <script src="scripts/models/image.js"></script>
         <script src="scripts/models/point.js"></script>
         <script src="scripts/models/layer.js"></script>
         <script src="scripts/services/rafsrv.js"></script>
-        
+
         <script src="scripts/services/settingssrv.js"></script>
         <script src="scripts/services/actionsSrv.js"></script>
         <script src="scripts/services/imagegenerationsrv.js"></script>
@@ -85,7 +83,7 @@
          <script src="scripts/controllers/home.js"></script>
          <script src="scripts/controllers/main.js"></script>
         <script src="scripts/controllers/tools.js"></script>
-        
+
         <script src="scripts/controllers/layers.js"></script>
         <script src="scripts/controllers/colorpicker.js"></script>
         <!-- endbuild -->
